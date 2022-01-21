@@ -28,7 +28,7 @@ Techinical overview:
 1. cloudformation:**
     Resources
       GetTimeInfo lambda function
-      GetTimeInfoRole role for lambda function
+      IamRole role for lambda function
       Custom resource to interact with lambda and customer
   Outputs
     Time zone, current information
