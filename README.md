@@ -30,9 +30,13 @@ Techinical overview:
       GetTimeInfo lambda function
       IamRole role for lambda function
       Custom resource to interact with lambda and customer
+  
+  
   Outputs
     Time zone, current information
     Unix time, current information
+  
+  
   Parameters
     Time zone, full string
-2. cloudformation passes information to lambda by setting an environment variable in the lambda function
+
