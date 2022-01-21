@@ -2,9 +2,9 @@ Overview:
 
 template.yml: cloudformation template
 
-cfn_lambda.py: lambda python code
+lambda_function.py: lambda python code
 
-resources/buildLambda.sh: shell script to build lambda zip file and upload to s3
+Lambda.sh: shell script to build lambda zip file and upload to s3
 
 
 **Workflow:**
