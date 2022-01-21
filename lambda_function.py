@@ -3,31 +3,31 @@ import requests
 
 
 def lambda_handler(event, context):
-    status = 'SUCCESS'
-    data = {}
+    responseStatus = 'SUCCESS'
+    responseData = {}
 
     if event['RequestType'] == 'Delete':
-        sendResponse(event, context, status, data)
+        sendResponse(event, context, responseStatus, responseData)
 
     timeInfo = getTimeInfo(event['ResourceProperties']['TimeZone'])
 
-    data = {'timeInfo': getFormattedString(
+    responseData = {'timeInfo': getFormattedString(
         timeInfo), 'unixTime': getUnixTime(timeInfo)}
 
-    sendResponse(event, context, status, data)
+    sendResponse(event, context, responseStatus, responseData)
 
 
-def sendResponse(event, context, status, data):
-    responseBody = {'Status': status,
+def sendResponse(event, context, responseStatus, responseData):
+    responseBody = {'Status': responseStatus,
                     'Reason': 'See the details in CloudWatch Log Stream: ' + context.log_stream_name,
                     'PhysicalResourceId': context.log_stream_name,
                     'StackId': event['StackId'],
                     'RequestId': event['RequestId'],
                     'LogicalResourceId': event['LogicalResourceId'],
-                    'Data': data}
+                    'Data': responseData}
 
     try:
-        req = requests.put(event['ResponseURL'], outData=json.dumps(responseBody))
+        req = requests.put(event['ResponseURL'], data=json.dumps(responseBody))
         if req.status_code != 200:
             print(req.text)
             raise Exception(
@@ -38,18 +38,18 @@ def sendResponse(event, context, status, data):
         raise
 
 
-def getUnixTime(outData):
-    return outData["unixtime"]
+def getUnixTime(data):
+    return data["unixtime"]
 
 
-def getFormattedString(outData):
-    return f'abbreviation: {outData["abbreviation"]} datetime: {outData["datetime"]} day_of_week: {outData["day_of_week"]} day_of_year: {outData["day_of_year"]} dst: {str(outData["dst"]).lower()} dst_from: {data["dst_from"]} dst_until: {data["dst_until"]} timezone: {data["timezone"]} unixtime: {data["unixtime"]} utc_offset: {data["utc_offset"]}'
+def getFormattedString(data):
+    return f'abbreviation: {data["abbreviation"]} datetime: {data["datetime"]} day_of_week: {data["day_of_week"]} day_of_year: {data["day_of_year"]} dst: {str(data["dst"]).lower()} dst_from: {data["dst_from"]} dst_until: {data["dst_until"]} timezone: {data["timezone"]} unixtime: {data["unixtime"]} utc_offset: {data["utc_offset"]}'
 
 
 def getTimeInfo(timeZone):
     print(f'timeZone: {timeZone}')
     url = f'http://worldtimeapi.org/api/timezone/{timeZone}'
-    return json.loads(requests.request("GET", url, headers={}, outData={}).text)
+    return json.loads(requests.request("GET", url, headers={}, data={}).text)
 
 
 if __name__ == '__main__':
