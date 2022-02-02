@@ -9,7 +9,7 @@ Lambda.sh: shell script to build lambda zip file and upload to s3
 
 **Workflow:**
 
-1. resources/buildLambda.sh
+1. resources/lambda.sh
     any time the lambda contents need to be updated
     
 2. aws cloudformation deploy --stack-name nttdata --template-file template.yml --capabilities CAPABILITY_NAMED_IAM --parameter- overrides TimeZone=Europe/London
